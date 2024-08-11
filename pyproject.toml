@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "xivapi-beta-client"
-version = "1-51ed033"
+version = "0.0.1"
 description = "A client library for accessing XIVAPI beta API"
 authors = ["Roman Gerasimov"]
 readme = "README.md"
