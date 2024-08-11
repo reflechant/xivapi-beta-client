@@ -1,47 +1,54 @@
 # xivapi-beta-client
 A client library for accessing XIVAPI beta API. Generated from the OpenAPI description.
+See the docs at https://beta.xivapi.com/api/1/docs.
 
 ## Usage
+
+### Step 1. Create a client
+
 First, create a client:
 
 ```python
 from xivapi_beta_client import Client
 
-client = Client(base_url="https://api.example.com")
+client = Client(base_url="https://beta.xivapi.com/api/1")
+```
+### Step 2. Make an API call
+
+Now call your endpoint and use your models:
+
+```python`
+import pprint
+
+from xivapi_beta_client import Client
+from xivapi_beta_client.api.search import get_search
+from xivapi_beta_client.models import SearchResponse
+
+with Client(base_url="https://beta.xivapi.com/api/1") as client:
+    data: SearchResponse = get_search.sync(
+        client=client,
+        query='Name="Skyruin Gunblade"',
+        sheets=["Item"],
+    )
+    pprint.pprint(data.to_dict())
+
 ```
 
-If the endpoints you're going to hit require authentication, use `AuthenticatedClient` instead:
+### Congratulations! You're good to go.
+
+## Advanced topics
+
+### Using an API key
+
+If you want to use your XIVAPI key, use `AuthenticatedClient` instead:
 
 ```python
 from xivapi_beta_client import AuthenticatedClient
 
-client = AuthenticatedClient(base_url="https://api.example.com", token="SuperSecretToken")
+client = AuthenticatedClient(base_url="https://beta.xivapi.com/api/1", token="SuperSecretToken")
 ```
 
-Now call your endpoint and use your models:
-
-```python
-from xivapi_beta_client.models import MyDataModel
-from xivapi_beta_client.api.my_tag import get_my_data_model
-from xivapi_beta_client.types import Response
-
-with client as client:
-    my_data: MyDataModel = get_my_data_model.sync(client=client)
-    # or if you need more info (e.g. status_code)
-    response: Response[MyDataModel] = get_my_data_model.sync_detailed(client=client)
-```
-
-Or do the same thing with an async version:
-
-```python
-from xivapi_beta_client.models import MyDataModel
-from xivapi_beta_client.api.my_tag import get_my_data_model
-from xivapi_beta_client.types import Response
-
-async with client as client:
-    my_data: MyDataModel = await get_my_data_model.asyncio(client=client)
-    response: Response[MyDataModel] = await get_my_data_model.asyncio_detailed(client=client)
-```
+Please refer to the [XIVAPI docs](https://xivapi.com/docs#api-access) for the details on when you should use an API key and how to obtain it.
 
 By default, when you're calling an HTTPS API it will attempt to verify that SSL is working correctly. Using certificate verification is highly recommended most of the time, but sometimes you may need to authenticate to a server (especially an internal server) using a custom certificate bundle.
 
@@ -89,7 +96,7 @@ def log_response(response):
     print(f"Response event hook: {request.method} {request.url} - Status {response.status_code}")
 
 client = Client(
-    base_url="https://api.example.com",
+    base_url="https://beta.xivapi.com/api/1",
     httpx_args={"event_hooks": {"request": [log_request], "response": [log_response]}},
 )
 
@@ -103,10 +110,10 @@ import httpx
 from xivapi_beta_client import Client
 
 client = Client(
-    base_url="https://api.example.com",
+    base_url="https://beta.xivapi.com/api/1",
 )
 # Note that base_url needs to be re-set, as would any shared cookies, headers, etc.
-client.set_httpx_client(httpx.Client(base_url="https://api.example.com", proxies="http://localhost:8030"))
+client.set_httpx_client(httpx.Client(base_url="https://beta.xivapi.com/api/1", proxies="http://localhost:8030"))
 ```
 
 ## Building / publishing this package
